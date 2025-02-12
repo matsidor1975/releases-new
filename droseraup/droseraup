@@ -161,11 +161,14 @@ else
 fi
 
 f_logMessage "Downloading ${VERSION} version of drosera"
-
+DL_BINS="drosera drosera-operator"
 DL_EXT=tar.gz
-DL_FILENAME="drosera-${VERSION}-${ARCHITECTURE}-${PLATFORM}.${DL_EXT}"
+DL_FILE_ENDING="${VERSION}-${ARCHITECTURE}-${PLATFORM}.${DL_EXT}"
 DL_RELEASE_URL="https://github.com/drosera-network/releases/releases/download/${VERSION}"
-DL_ARCHIVE_URL="${DL_RELEASE_URL}/${DL_FILENAME}"
 
-f_download "${DL_ARCHIVE_URL}" "/tmp/${DL_FILENAME}"
-tar xzvf "/tmp/${DL_FILENAME}" -C "${DROSERA_BIN_DIR}"
+for b in ${DL_BINS}; do
+    dl_filename="${b}-${DL_FILE_ENDING}"
+    dl_archive_url="${DL_RELEASE_URL}/${dl_filename}"
+    f_download "${dl_archive_url}" "/tmp/${dl_filename}"
+    tar xzvf "/tmp/${dl_filename}" -C "${DROSERA_BIN_DIR}"
+done
